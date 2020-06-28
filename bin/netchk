@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+
+require "netchk"
+require 'netchk/ip_verifier'
+require 'netchk/dns_server_verifier'
+require 'netchk/dns_resolv_verifier'
+require 'netchk/icmp_ping_verifier'
+
+Netchk::IpVerifier.new.verify
+Netchk::DNSServerVerifier.new.verify
+Netchk::DNSResolvVerifier.new.verify
+Netchk::ICMPPingVerifier.new.verify

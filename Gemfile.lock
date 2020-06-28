@@ -1,0 +1,20 @@
+PATH
+  remote: .
+  specs:
+    netchk (0.0.1.beta)
+      net-ping (~> 2.0)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    net-ping (2.0.8)
+
+PLATFORMS
+  ruby
+  x86_64-darwin-19
+
+DEPENDENCIES
+  netchk!
+
+BUNDLED WITH
+   2.1.2
