@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    netchk (0.0.1.beta)
+    netchk (0.0.1)
       net-ping (~> 2.0)
 
 GEM
