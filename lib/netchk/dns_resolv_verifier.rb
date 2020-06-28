@@ -1,12 +1,13 @@
 # frozen_string_literal: true
 module Netchk
   class DNSResolvVerifier
-    def initialize
-      @domains = %w[google.com facebook.com]
+    def initialize(**options)
+      @domains = options['domains'] || %w[google.com youtube.com facebook.com]
+      @resolv_conf = options['resolv.conf']
     end
 
     def verify
-      ::Resolv::DNS.open do |dns|
+      ::Resolv::DNS.open(@resolv_conf) do |dns|
         @domains.each do |domain|
           begin
             dns.getaddress(domain)

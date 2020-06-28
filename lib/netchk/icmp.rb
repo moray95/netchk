@@ -1,3 +1,4 @@
+# rubocop:disable  Style/FrozenStringLiteralComment:
 require 'net/ping/ping'
 
 if File::ALT_SEPARATOR
@@ -6,7 +7,6 @@ end
 
 # The Net module serves as a namespace only.
 module Netchk
-
   # Modified version of Net::Ping::ICMP that does
   # not check for root privileges and uses a DGRAM
   # socket instead of a raw socket.
@@ -27,14 +27,14 @@ module Netchk
 
     # Creates and returns a new Ping::ICMP object.  This is similar to its
     # superclass constructor, and the port value is ignored.
-    def initialize(host=nil, port=nil, timeout=5)
+    def initialize(host = nil, port = nil, timeout = 5)
       @seq = 0
       @bind_port = 0
       @bind_host = nil
       @data_size = 56
       @data = ''
 
-      0.upto(@data_size){ |n| @data << (n % 256).chr }
+      0.upto(@data_size) { |n| @data << (n % 256).chr }
 
       @ping_id = (Thread.current.object_id ^ Process.pid) & 0xffff
 
@@ -47,7 +47,7 @@ module Netchk
     def data_size=(size)
       @data_size = size
       @data = ''
-      0.upto(size){ |n| @data << (n % 256).chr }
+      0.upto(size) { |n| @data << (n % 256).chr }
     end
 
     # Associates the local end of the socket connection with the given
@@ -99,7 +99,7 @@ module Netchk
       socket.send(msg, 0, saddr) # Send the message
 
       begin
-        Timeout.timeout(@timeout){
+        Timeout.timeout(@timeout) {
           while true
             io_array = select([socket], nil, nil, timeout)
 
@@ -143,24 +143,24 @@ module Netchk
 
     private
 
-    # Perform a checksum on the message.  This is the sum of all the short
-    # words and it folds the high order bits into the low order bits.
-    #
-    def checksum(msg)
-      length    = msg.length
-      num_short = length / 2
-      check     = 0
+      # Perform a checksum on the message.  This is the sum of all the short
+      # words and it folds the high order bits into the low order bits.
+      #
+      def checksum(msg)
+        length    = msg.length
+        num_short = length / 2
+        check     = 0
 
-      msg.unpack("n#{num_short}").each do |short|
-        check += short
+        msg.unpack("n#{num_short}").each do |short|
+          check += short
+        end
+
+        if length % 2 > 0
+          check += msg[length - 1, 1].unpack('C').first << 8
+        end
+
+        check = (check >> 16) + (check & 0xffff)
+        return (~((check >> 16) + check) & 0xffff)
       end
-
-      if length % 2 > 0
-        check += msg[length-1, 1].unpack('C').first << 8
-      end
-
-      check = (check >> 16) + (check & 0xffff)
-      return (~((check >> 16) + check) & 0xffff)
-    end
   end
 end

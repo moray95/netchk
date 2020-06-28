@@ -1,4 +1,5 @@
-$LOAD_PATH.unshift File.expand_path("../lib", __dir__)
-require "netchk"
+# frozen_string_literal: true
+$LOAD_PATH.unshift File.expand_path('../lib', __dir__)
+require 'netchk'
 
-require "minitest/autorun"
+require 'minitest/autorun'

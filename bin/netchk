@@ -5,8 +5,19 @@ require 'netchk/ip_verifier'
 require 'netchk/dns_server_verifier'
 require 'netchk/dns_resolv_verifier'
 require 'netchk/icmp_ping_verifier'
+require 'yaml'
+
+config_files = %w[.netchk.yaml .netchk.yml].map { |f| File.join(Dir.home, f) }
+
+config_file = config_files.find(&File.method(:exists?))
+
+config = config_file
+           &.then(&File.method(:read))
+           &.then(&YAML.method(:load))
+
+config = config || {}
 
 Netchk::IpVerifier.new.verify
-Netchk::DNSServerVerifier.new.verify
-Netchk::DNSResolvVerifier.new.verify
-Netchk::ICMPPingVerifier.new.verify
+Netchk::DNSServerVerifier.new(**(config['dns'] || {})).verify
+Netchk::DNSResolvVerifier.new(**(config['resolv'] || {})).verify
+Netchk::ICMPPingVerifier.new(**(config['icmp'] || {})).verify
