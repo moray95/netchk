@@ -10,12 +10,12 @@ module Netchk
     end
 
     def verify
-      nameservers = self.nameservers
-      if nameservers.empty?
+      servers = nameservers
+      if servers.empty?
         $stderr.puts 'No DNS server found. Verify your configuration.'
       else
-        puts "Using DNS servers #{nameservers.map { |ns| ns.join('#') }.join(', ')}"
-        nameservers.map do |ns|
+        puts "Using DNS servers #{servers.map { |ns| ns.join('#') }.join(', ')}"
+        servers.map do |ns|
           verify_nameserver(*ns)
         end
       end

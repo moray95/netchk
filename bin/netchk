@@ -11,11 +11,9 @@ config_files = %w[.netchk.yaml .netchk.yml].map { |f| File.join(Dir.home, f) }
 
 config_file = config_files.find(&File.method(:exists?))
 
-config = config_file
-           &.then(&File.method(:read))
-           &.then(&YAML.method(:load))
-
-config = config || {}
+config = config_file.nil? ? {} : config_file
+                                   .then(&File.method(:read))
+                                   .then(&YAML.method(:load))
 
 Netchk::IpVerifier.new.verify
 Netchk::DNSServerVerifier.new(**(config['dns'] || {})).verify

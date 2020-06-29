@@ -7,7 +7,7 @@ module Netchk
       socket = Socket.ip_address_list
       addresses = socket.reject(&:ipv4_loopback?)
       addresses.reject!(&:ipv6_loopback?)
-      addresses.filter!(&:ipv4?)
+      addresses.select!(&:ipv4?)
       addresses.map!(&:inspect_sockaddr)
 
       if addresses.empty?
