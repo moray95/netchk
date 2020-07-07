@@ -28,24 +28,26 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-
+    strategy:
+      matrix:
+        rubyVersion: [2.5, 2.6, 2.7]
     steps:
       - uses: actions/checkout@v2
-      - name: Set up Ruby 2.7
+      - name: Set up Ruby ${{ matrix.rubyVersion }}
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 2.7
-      - name: Cache gems
+          ruby-version: ${{ matrix.rubyVersion }}
+      - name: Cache gems (Ruby ${{ matrix.rubyVersion }})
         uses: actions/cache@v1
         with:
           path: vendor/bundle
-          key: ${{ runner.os }}-tet-${{ hashFiles('**/Gemfile.lock') }}
+          key: ${{ runner.os }}-test-ruby-${{ matrix.rubyVersion }}-${{ hashFiles('**/Gemfile.lock') }}
           restore-keys: |
-            ${{ runner.os }}-test-
-      - name: Install gems
+            ${{ runner.os }}-test-${{ matrix.rubyVersion }}
+      - name: Install gems (Ruby ${{ matrix.rubyVersion }})
         run: |
           bundle config path vendor/bundle
           bundle config set frozen 'true'
           bundle install --jobs 4 --retry 3
-      - name: Run tests
+      - name: Run tests (Ruby ${{ matrix.rubyVersion }})
         run: bundle exec rspec
