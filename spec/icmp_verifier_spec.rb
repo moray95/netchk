@@ -57,4 +57,3 @@ describe Netchk::ICMPVerifier do
     end
   end
 end
-
