@@ -3,6 +3,11 @@ require 'socket'
 
 module Netchk
   class IpVerifier
+    def initialize(out: $stdout, err: $stderr)
+      @out = out
+      @err = err
+    end
+
     def verify
       socket = Socket.ip_address_list
       addresses = socket.reject(&:ipv4_loopback?)
@@ -11,9 +16,9 @@ module Netchk
       addresses.map!(&:inspect_sockaddr)
 
       if addresses.empty?
-        $stderr.puts 'No IPv4 address found. Verify your connection to your router.'
+        @err.puts 'No IPv4 address found. Verify your connection to your router.'
       else
-        puts "Found IP addresses #{addresses.join(', ')}."
+        @out.puts "Found IP addresses #{addresses.join(', ')}."
       end
     end
   end

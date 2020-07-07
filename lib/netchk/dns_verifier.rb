@@ -4,17 +4,19 @@ require 'socket'
 require 'net/ping/tcp'
 
 module Netchk
-  class DNSServerVerifier
-    def initialize(**options)
+  class DNSVerifier
+    def initialize(out: $stdout, err: $stderr, **options)
+      @out = out
+      @err = err
       @resolve_conf = options['resolv.conf']
     end
 
     def verify
       servers = nameservers
       if servers.empty?
-        $stderr.puts 'No DNS server found. Verify your configuration.'
+        @err.puts 'No DNS server found. Verify your configuration.'
       else
-        puts "Using DNS servers #{servers.map { |ns| ns.join('#') }.join(', ')}"
+        @out.puts "Using DNS servers #{servers.map { |ns| ns.join('#') }.join(', ')}"
         servers.map do |ns|
           verify_nameserver(*ns)
         end
@@ -25,7 +27,7 @@ module Netchk
       def verify_nameserver(ip, port)
         ping = Net::Ping::TCP.new(ip, port)
         unless ping.ping?
-          $stderr.puts "Failed to ping DNS server #{ip}##{port}"
+          @err.puts "Failed to ping DNS server #{ip}##{port}"
         end
       end
 

@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 module Netchk
-  class DNSResolvVerifier
-    def initialize(**options)
+  class ResolvVerifier
+    def initialize(out: $stdout, err: $stderr, **options)
+      @out = out
+      @err = err
       @domains = options['domains'] || %w[google.com youtube.com facebook.com]
       @resolv_conf = options['resolv.conf']
     end
@@ -11,8 +13,9 @@ module Netchk
         @domains.each do |domain|
           begin
             dns.getaddress(domain)
+            @out.puts "Resolved #{domain}"
           rescue ::Resolv::ResolvError
-            $stderr.puts "Failed to resolve #{domain}"
+            @err.puts "Failed to resolve #{domain}"
           end
         end
       end
