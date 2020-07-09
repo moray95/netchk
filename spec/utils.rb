@@ -39,7 +39,7 @@ class Netchk::ResolvVerifier
   def self.mocked(domains)
     out = StringIO.new
     err = StringIO.new
-    [out, err, new(out: out, err: err, 'domains' => domains)]
+    [out, err, new(out: out, err: err, domains: domains)]
   end
 end
 
@@ -47,7 +47,7 @@ class Netchk::ICMPVerifier
   def self.mocked(hosts, count)
     out = StringIO.new
     err = StringIO.new
-    [out, err, new(out: out, err: err, 'hosts' => hosts, 'count' => count)]
+    [out, err, new(out: out, err: err, hosts: hosts, count: count)]
   end
 end
 

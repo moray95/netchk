@@ -15,9 +15,9 @@ module Netchk
     def initialize(out: $stdout, err: $stderr, **options)
       @out = out
       @err = err
-      @hosts = options['hosts'] || %w[1.1.1.1 8.8.8.8]
-      @count = options['count'] || 20
-      @interval = options['interval'] || 0.2
+      @hosts = options[:hosts] || %w[1.1.1.1 8.8.8.8]
+      @count = options[:count] || 20
+      @interval = options[:interval] || 0.2
     end
 
     def verify

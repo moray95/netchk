@@ -4,8 +4,8 @@ module Netchk
     def initialize(out: $stdout, err: $stderr, **options)
       @out = out
       @err = err
-      @domains = options['domains'] || %w[google.com youtube.com facebook.com]
-      @resolv_conf = options['resolv.conf']
+      @domains = options[:domains] || %w[google.com youtube.com facebook.com]
+      @resolv_conf = options[:'resolv.conf']
     end
 
     def verify
