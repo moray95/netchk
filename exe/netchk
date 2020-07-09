@@ -1,21 +1,6 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-require 'netchk'
-require 'netchk/ip_verifier'
-require 'netchk/dns_verifier'
-require 'netchk/resolv_verifier'
-require 'netchk/icmp_verifier'
-require 'yaml'
-require 'netchk/ext/hash'
+require 'cli'
 
-config_files = %w[.netchk.yaml .netchk.yml].map { |f| File.join(Dir.home, f) }
-
-config_file = config_files.find(&File.method(:exists?))
-
-config = config_file.nil? ? {} : YAML.safe_load(File.read(config_file)).symbolize_keys
-
-Netchk::IpVerifier.new.verify
-Netchk::DNSVerifier.new(**(config[:dns] || {})).verify
-Netchk::ResolvVerifier.new(**(config[:resolv] || {})).verify
-Netchk::ICMPVerifier.new(**(config[:icmp] || {})).verify
+Netchk::CLI.run
