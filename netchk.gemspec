@@ -7,7 +7,6 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Moray Baruh']
 
   spec.summary       = 'Simple internet troubleshooter.'
-  spec.description   = File.read('README.md')
   spec.homepage      = 'https://github.com/moray95/netchk'
   spec.license       = 'WTFPL'
   spec.required_ruby_version = Gem::Requirement.new('>= 2.3.0')
@@ -19,7 +18,7 @@ Gem::Specification.new do |spec|
   spec.files = Dir.chdir(File.expand_path('..', __FILE__)) do
     `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   end
-  spec.bindir        = 'bin'
+  spec.bindir        = 'exe'
   spec.executables   = ['netchk']
   spec.require_paths = ['lib']
 
